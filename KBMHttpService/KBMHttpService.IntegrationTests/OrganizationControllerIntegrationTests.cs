@@ -3,6 +3,8 @@ using KBMHttpService.Services;
 using KBMGrpcService.Protos;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using KBMHttpService.Models;
+using KBMGrpcService.Models;
 
 namespace KBMHttpService.Tests.Integration
 {
@@ -21,7 +23,7 @@ namespace KBMHttpService.Tests.Integration
         public async Task CreateOrganization_ReturnsSuccess()
         {
             // Arrange
-            var createRequest = new CreateOrganizationRequest { Name = "Test Org", Address = "123 Test St" };
+            var createRequest = new Models.CreateOrganizationRequestModel { Name = "Test Org", Address = "123 Test St" };
             var createResponse = new CreateOrganizationResponse { OrganizationId = 1 };
 
             _organizationServiceMock.Setup(service => service.CreateOrganizationAsync(createRequest))
@@ -83,13 +85,16 @@ namespace KBMHttpService.Tests.Integration
         public async Task QueryOrganizations_ReturnsOrganizations()
         {
             // Arrange
-            var queryRequest = new QueryOrganizationsRequest { Page = 1, PageSize = 10 };
-            var queryResponse = new QueryOrganizationsResponse
+            var queryRequest = new QueryRequestModel { page = 1, pageSize = 10 };
+            var queryResponse = new QueryOrganizationResponseModel
             {
                 Page = 1,
                 PageSize = 10,
-                Organizations = { new OrganizationModel { Id = 1, Name = "Test Org", Address = "123 Test St" } },
-                Total = 1
+                Total = 1,
+                Organizations = new List<OrganizationsModel>
+        {
+            new OrganizationsModel { Id = 1, Name = "Test Org", Address = "123 Test St" }
+        }
             };
 
             _organizationServiceMock.Setup(service => service.QueryOrganizationsAsync(queryRequest))
@@ -99,12 +104,13 @@ namespace KBMHttpService.Tests.Integration
             var result = await _controller.QueryOrganizations(queryRequest) as OkObjectResult;
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result);  
+            Assert.Equal(200, result.StatusCode); 
 
-            var responseData = result.Value as QueryOrganizationsResponse;
-            Assert.NotNull(responseData);
-            Assert.NotEmpty(responseData.Organizations);
+            var responseData = result.Value as QueryOrganizationResponseModel;
+            Assert.NotNull(responseData);  
+            Assert.Equal(1, responseData.Organizations.Count()); 
+            Assert.Equal("Test Org", responseData.Organizations.First().Name);  
         }
 
         [Fact]
@@ -123,17 +129,20 @@ namespace KBMHttpService.Tests.Integration
                 Name = "Updated Org",
                 Address = "456 Updated St"
             };
+            var updateResponse = new UpdateOrganizationResponse(); 
 
-            _organizationServiceMock.Setup(service => service.UpdateOrganizationAsync(updateRequest))
-                .Returns(Task.CompletedTask);
+            _organizationServiceMock.Setup(service => service.UpdateOrganizationAsync(It.IsAny<UpdateOrganizationRequest>()))
+                .ReturnsAsync(updateResponse); 
 
             // Act
             var result = await _controller.UpdateOrganization(updateRequestModel) as OkObjectResult;
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.Equal("Success", result.Value);
+            Assert.NotNull(result); 
+            Assert.Equal(200, result.StatusCode);  
+
+            var responseData = result.Value as UpdateOrganizationResponse;
+            Assert.NotNull(responseData); 
         }
 
         [Fact]
@@ -152,7 +161,7 @@ namespace KBMHttpService.Tests.Integration
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
-            Assert.Equal("Success", result.Value);
+            Assert.Equal("Organization deleted successfully.", result.Value);
         }
     }
 }

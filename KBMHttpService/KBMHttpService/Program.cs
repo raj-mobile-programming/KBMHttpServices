@@ -2,14 +2,17 @@ using KBMHttpService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddGrpcClient<KBMGrpcService.Protos.OrganizationService.OrganizationServiceClient>(option =>
 {
-    option.Address = new Uri("https://localhost:7048");
+    option.Address = new Uri(builder.Configuration["GrpcServices:ServiceUrl"]);
 });
+
 builder.Services.AddGrpcClient<KBMGrpcService.Protos.UserService.UserServiceClient>(option =>
 {
-    option.Address = new Uri("https://localhost:7048");
+    option.Address = new Uri(builder.Configuration["GrpcServices:ServiceUrl"]);
 });
+
 
 // Add services to the container.
 builder.Services.AddScoped<IOrganizationService, KBMHttpService.Services.OrganizationService>();

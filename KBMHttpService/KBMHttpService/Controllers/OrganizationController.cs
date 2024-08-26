@@ -2,6 +2,8 @@
 using KBMGrpcService.Protos;
 using Microsoft.AspNetCore.Mvc;
 using Grpc.Core;
+using KBMHttpService.Models;
+using System.Net;
 
 namespace KBMHttpService.Controllers
 {
@@ -16,8 +18,13 @@ namespace KBMHttpService.Controllers
             _organizationService = organizationService;
         }
 
+        /// <summary>
+        /// Create new organization.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateOrganization(CreateOrganizationRequest request)
+        public async Task<IActionResult> CreateOrganization(CreateOrganizationRequestModel request)
         {
             try
             {
@@ -26,10 +33,21 @@ namespace KBMHttpService.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+                var errorResponse = new
+                {
+                    StatusCode = (int)System.Net.HttpStatusCode.InternalServerError,
+                    Message = ex.Message
+                };
+
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, errorResponse);
             }
         }
 
+        /// <summary>
+        /// Get organization data by organizationId.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetOrganization(long id)
         {
@@ -47,12 +65,22 @@ namespace KBMHttpService.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+                var errorResponse = new
+                {
+                    StatusCode = (int)System.Net.HttpStatusCode.InternalServerError,
+                    Message = ex.Message
+                };
+
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, errorResponse);
             }
         }
-
+        /// <summary>
+        /// Query organization and get data.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost("Query")]
-        public async Task<IActionResult> QueryOrganizations([FromQuery] QueryOrganizationsRequest request)
+        public async Task<IActionResult> QueryOrganizations([FromBody] QueryRequestModel request)
         {
             try
             {
@@ -61,25 +89,47 @@ namespace KBMHttpService.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+                var errorResponse = new
+                {
+                    StatusCode = (int)System.Net.HttpStatusCode.InternalServerError,
+                    Message = ex.Message
+                };
+
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, errorResponse);
             }
         }
 
+        /// <summary>
+        /// Update organization on the basis of organization id
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateOrganization(KBMHttpService.Models.UpdateOrganizationRequestModel req)
+        public async Task<IActionResult> UpdateOrganization(KBMHttpService.Models.UpdateOrganizationRequestModel request)
         {
             try
             {
-                var request = new UpdateOrganizationRequest { OrganizationId = req.OrganizationId, Name = req.Name, Address = req.Address };
-                await _organizationService.UpdateOrganizationAsync(request);
-                return Ok("Success");
+                var req = new UpdateOrganizationRequest { OrganizationId = request.OrganizationId, Name = request.Name, Address = request.Address };
+                 var response = await _organizationService.UpdateOrganizationAsync(req);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+                var errorResponse = new
+                {
+                    StatusCode = (int)System.Net.HttpStatusCode.InternalServerError,
+                    Message = ex.Message
+                };
+
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, errorResponse);
             }
         }
 
+        /// <summary>
+        /// Soft delete organization on the basis of organization id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteOrganization(long id)
         {
@@ -87,11 +137,17 @@ namespace KBMHttpService.Controllers
             {
                 var request = new DeleteOrganizationRequest { OrganizationId = id };
                 await _organizationService.DeleteOrganizationAsync(request);
-                return Ok("Success");
+                return Ok("Organization deleted successfully.");
             }
             catch (Exception ex)
             {
-                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+                var errorResponse = new
+                {
+                    StatusCode = (int)System.Net.HttpStatusCode.InternalServerError,
+                    Message = ex.Message
+                };
+
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, errorResponse);
             }
         }
     }

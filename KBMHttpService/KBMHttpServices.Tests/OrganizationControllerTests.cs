@@ -1,5 +1,6 @@
 using KBMGrpcService.Protos;
 using KBMHttpService.Controllers;
+using KBMHttpService.Models;
 using KBMHttpService.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -19,10 +20,10 @@ public class OrganizationControllerTests : IDisposable
     public async Task CreateOrganization_ReturnsOkResult_WithCreatedOrganization()
     {
         // Arrange
-        var request = new CreateOrganizationRequest { Name = "Test Org", Address = "123 Street" };
+        var request = new CreateOrganizationRequestModel { Name = "Test Org", Address = "123 Street" };
         var response = new CreateOrganizationResponse { OrganizationId = 1 };
 
-        _mockService.Setup(x => x.CreateOrganizationAsync(It.IsAny<CreateOrganizationRequest>()))
+        _mockService.Setup(x => x.CreateOrganizationAsync(It.IsAny<CreateOrganizationRequestModel>()))
                     .ReturnsAsync(response);
 
         // Act
@@ -68,10 +69,10 @@ public class OrganizationControllerTests : IDisposable
     public async Task QueryOrganizations_ReturnsOkResult_WithOrganizations()
     {
         // Arrange
-        var request = new QueryOrganizationsRequest { Page = 1, PageSize = 10 };
-        var response = new QueryOrganizationsResponse();
+        var request = new KBMHttpService.Models.QueryRequestModel { page = 1, pageSize = 10 };
+        var response = new QueryOrganizationResponseModel();
 
-        _mockService.Setup(x => x.QueryOrganizationsAsync(It.IsAny<QueryOrganizationsRequest>()))
+        _mockService.Setup(x => x.QueryOrganizationsAsync(It.IsAny<QueryRequestModel>()))
                     .ReturnsAsync(response);
 
         // Act
@@ -88,8 +89,7 @@ public class OrganizationControllerTests : IDisposable
         // Arrange
         var request = new KBMHttpService.Models.UpdateOrganizationRequestModel { OrganizationId = 1, Name = "Updated Org", Address = "456 Street" };
 
-        _mockService.Setup(x => x.UpdateOrganizationAsync(It.IsAny<UpdateOrganizationRequest>()))
-                    .Returns(Task.CompletedTask);
+        _mockService.Setup(x => x.UpdateOrganizationAsync(It.IsAny<UpdateOrganizationRequest>()));
 
         // Act
         var result = await _controller.UpdateOrganization(request);

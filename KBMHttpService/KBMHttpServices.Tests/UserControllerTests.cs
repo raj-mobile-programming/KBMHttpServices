@@ -100,10 +100,10 @@ public class UserControllerTests
         }
         };
 
-        _mockUserService.Setup(service => service.QueryUsersAsync(It.IsAny<QueryUserRequestModel>()))
+        _mockUserService.Setup(service => service.QueryUsersAsync(It.IsAny<QueryRequestModel>()))
                         .ReturnsAsync(response);
 
-        var request = new QueryOrganizationRequestModel
+        var request = new QueryRequestModel
         {
             page = 1,
             pageSize = 10,
@@ -160,7 +160,7 @@ public class UserControllerTests
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         var returnValue = Assert.IsType<string>(okResult.Value);
-        Assert.Equal("Success", returnValue);
+        Assert.Equal("User deleted successfully", returnValue);
     }
 
     [Fact]
@@ -182,7 +182,7 @@ public class UserControllerTests
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         var returnValue = Assert.IsType<string>(okResult.Value);
-        Assert.Equal("Success", returnValue);
+        Assert.Equal("User associated successfully", returnValue);
     }
     [Fact]
     public async Task DisassociateUserFromOrganization_ReturnsOkResult()
@@ -202,7 +202,7 @@ public class UserControllerTests
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         var returnValue = Assert.IsType<string>(okResult.Value);
-        Assert.Equal("Success", returnValue);
+        Assert.Equal("User diassociated successfully.", returnValue);
     }
     [Fact]
     public async Task GetUserReturnsNotFoundWhenUserDoesNotExist()

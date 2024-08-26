@@ -1,6 +1,8 @@
 ﻿using Grpc.Core;
+using KBMGrpcService.Models;
 using KBMGrpcService.Protos;
 using KBMHttpService.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace KBMHttpService.Services
 {
@@ -13,17 +15,18 @@ namespace KBMHttpService.Services
             _client = client;
         }
 
-        public async Task<CreateOrganizationResponse> CreateOrganizationAsync(CreateOrganizationRequest model)
+        public async Task<CreateOrganizationResponse> CreateOrganizationAsync(CreateOrganizationRequestModel request)
         {
             try
             {
-                var request = new CreateOrganizationRequest
+                var req = new CreateOrganizationRequest
                 {
-                    Name = model.Name,
-                    Address = model.Address
+                    Name = request.Name,
+                    Address = request.Address
                 };
 
-                return await _client.CreateOrganizationAsync(request);
+                var response = await _client.CreateOrganizationAsync(req);
+                return response;
             }
             catch (Exception ex)
             {
@@ -51,30 +54,37 @@ namespace KBMHttpService.Services
             }
         }
         //Query organization
-        public async Task<QueryOrganizationsResponse> QueryOrganizationsAsync(QueryOrganizationsRequest req)
+        public async Task<KBMHttpService.Models.QueryOrganizationResponseModel> QueryOrganizationsAsync(QueryRequestModel req)
         {
             try
             {
-                var response = await _client.QueryOrganizationsAsync(req);
+                var request = new QueryOrganizationsRequest
+                {
+                    Page = req.page,
+                    PageSize = req.pageSize,
+                    Direction = req.direction ?? "asc", 
+                    OrderBy = req.orderBy ?? "Name", 
+                    QueryString = req.queryString ?? string.Empty
+                };
+
+                var response = await _client.QueryOrganizationsAsync(request);
 
                 // Constructed response model
-                var responseModel = new QueryOrganizationsResponse
+                var responseModel = new QueryOrganizationResponseModel
                 {
                     Page = response.Page,
                     PageSize = response.PageSize,
-                    Organizations =
-            {
-                response.Organizations.Select(x => new KBMGrpcService.Protos.OrganizationModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Address = x.Address,
-                    CreatedAt = x.CreatedAt
-                }).ToList()
-
-            }
+                    Organizations = response.Organizations.Select(x => new OrganizationsModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Address = x.Address,
+                        CreatedAt = x.CreatedAt,
+                        UpdatedAt = x.UpdatedAt
+                    }).ToList()
                 };
-                responseModel.Total = responseModel.Organizations.Count;
+
+                responseModel.Total = responseModel.Organizations.Count();
                 return responseModel;
             }
             catch (RpcException ex) when (ex.StatusCode == Grpc.Core.StatusCode.NotFound)
@@ -82,8 +92,9 @@ namespace KBMHttpService.Services
                 throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
             }
         }
+
         //Update organization
-        public async Task UpdateOrganizationAsync(UpdateOrganizationRequest req)
+        public async Task<UpdateOrganizationResponse> UpdateOrganizationAsync(UpdateOrganizationRequest req)
         {
             try
             {
@@ -94,7 +105,8 @@ namespace KBMHttpService.Services
                     Address = req.Address
                 };
 
-                await _client.UpdateOrganizationAsync(request);
+               var response = await _client.UpdateOrganizationAsync(request);
+                return response;
             }
             catch (RpcException ex) when (ex.StatusCode == Grpc.Core.StatusCode.NotFound)
             {

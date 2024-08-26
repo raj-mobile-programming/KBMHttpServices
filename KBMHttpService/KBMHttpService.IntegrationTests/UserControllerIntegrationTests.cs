@@ -77,10 +77,10 @@ public class UserControllerTests
             }
         };
 
-        _mockUserService.Setup(service => service.QueryUsersAsync(It.IsAny<QueryUserRequestModel>()))
+        _mockUserService.Setup(service => service.QueryUsersAsync(It.IsAny<QueryRequestModel>()))
                         .ReturnsAsync(response);
 
-        var request = new QueryOrganizationRequestModel
+        var request = new QueryRequestModel
         {
             page = 1,
             pageSize = 10,

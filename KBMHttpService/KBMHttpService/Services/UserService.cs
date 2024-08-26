@@ -14,18 +14,22 @@ namespace KBMHttpService.Services
             _client = client;
         }
 
-        public async Task<CreateUserResponseModel> CreateUserAsync(CreateUserRequestModel req)
+        public async Task<CreateUserResponseModel> CreateUserAsync(CreateUserRequestModel request)
         {
             try
             {
-                var request = new CreateUserRequest
+                if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Email))
                 {
-                    Name = req.Name,
-                    Username = req.Username,
-                    Email = req.Email
+                    throw new RpcException(new Status(StatusCode.InvalidArgument, "Name, Username and Email are required."));
+                }
+                var req = new CreateUserRequest
+                {
+                    Name = request.Name,
+                    Username = request.Username,
+                    Email = request.Email
                 };
 
-                var response = await _client.CreateUserAsync(request);
+                var response = await _client.CreateUserAsync(req);
                 return new CreateUserResponseModel { UserId = response.UserId }; 
             }
             catch (RpcException ex) when (ex.StatusCode == Grpc.Core.StatusCode.NotFound)
@@ -56,20 +60,19 @@ namespace KBMHttpService.Services
 
         //Query User
 
-        public async Task<QueryUsersResponseModel> QueryUsersAsync(QueryUserRequestModel req)
+        public async Task<QueryUsersResponseModel> QueryUsersAsync(QueryRequestModel req)
         {
             var request = new QueryUsersRequest
             {
                 Page = req.page,
                 PageSize = req.pageSize,
-                Direction = req.direction,
-                OrderBy = req.orderBy,
-                QueryString = req.queryString,
+                Direction = req.direction ?? "asc", 
+                OrderBy = req.orderBy ?? "Username",
+                QueryString = req.queryString ?? string.Empty
             };
-            // Send the request to the gRPC service
+
             var response = await _client.QueryUsersAsync(request);
 
-            // Construct the response model
             var responseModel = new QueryUsersResponseModel
             {
                 Page = response.Page,
@@ -83,6 +86,7 @@ namespace KBMHttpService.Services
                     CreatedAt = u.CreatedAt
                 }).ToList()
             };
+
             responseModel.Total = responseModel.Users.Count();
             return responseModel;
         }

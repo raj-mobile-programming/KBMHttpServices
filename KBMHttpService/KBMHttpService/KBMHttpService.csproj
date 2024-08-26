@@ -1,28 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Controllers\" />
+		<Folder Include="Services\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="..\..\..\KBMGrpcServices\KBMGrpcService\KBMGrpcService\Protos\organization.proto" GrpcServices="Client">
-      <Link>Protos\organization.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\..\KBMGrpcServices\KBMGrpcService\KBMGrpcService\Protos\user.proto" GrpcServices="Client">
-      <Link>Protos\user.proto</Link>
-    </Protobuf>
-  </ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="..\..\..\KBMGrpcServices\KBMGrpcService\KBMGrpcService\Protos\organization.proto" GrpcServices="Client">
+			<Link>Protos\organization.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\..\..\KBMGrpcServices\KBMGrpcService\KBMGrpcService\Protos\user.proto" GrpcServices="Client">
+			<Link>Protos\user.proto</Link>
+		</Protobuf>
+	</ItemGroup>
 
 </Project>

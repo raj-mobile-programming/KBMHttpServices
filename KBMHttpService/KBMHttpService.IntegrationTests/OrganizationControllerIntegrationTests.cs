@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-using KBMHttpService.Controllers;
+﻿using KBMHttpService.Controllers;
 using KBMHttpService.Services;
 using KBMGrpcService.Protos;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Xunit;
 
 namespace KBMHttpService.Tests.Integration
 {

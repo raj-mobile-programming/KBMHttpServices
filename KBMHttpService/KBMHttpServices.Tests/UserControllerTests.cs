@@ -1,7 +1,5 @@
-﻿using Xunit;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Threading.Tasks;
 using KBMHttpService.Controllers;
 using KBMHttpService.Services;
 using KBMHttpService.Models;

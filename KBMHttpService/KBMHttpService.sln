@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KBMHttpService", "KBMHttpService\KBMHttpService.csproj", "{EDEF7E61-8F46-4949-BA39-52258B139E83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KBMHttpService", "KBMHttpService\KBMHttpService.csproj", "{EDEF7E61-8F46-4949-BA39-52258B139E83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KBMHttpServices.Tests", "KBMHttpServices.Tests\KBMHttpServices.Tests.csproj", "{9EFE4711-9D00-48CB-BFF4-56C0FE96FA5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EDEF7E61-8F46-4949-BA39-52258B139E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDEF7E61-8F46-4949-BA39-52258B139E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDEF7E61-8F46-4949-BA39-52258B139E83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EFE4711-9D00-48CB-BFF4-56C0FE96FA5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EFE4711-9D00-48CB-BFF4-56C0FE96FA5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EFE4711-9D00-48CB-BFF4-56C0FE96FA5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EFE4711-9D00-48CB-BFF4-56C0FE96FA5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

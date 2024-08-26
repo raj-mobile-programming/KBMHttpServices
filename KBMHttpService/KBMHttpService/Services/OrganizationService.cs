@@ -101,6 +101,7 @@ namespace KBMHttpService.Services
                 throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
             }
         }
+
         //Soft delete organization
         public async Task DeleteOrganizationAsync(DeleteOrganizationRequest req)
         {

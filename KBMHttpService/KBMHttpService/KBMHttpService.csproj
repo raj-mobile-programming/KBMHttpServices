@@ -20,6 +20,9 @@
     <Protobuf Include="..\..\..\KBMGrpcServices\KBMGrpcService\KBMGrpcService\Protos\organization.proto" GrpcServices="Client">
       <Link>Protos\organization.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\..\..\KBMGrpcServices\KBMGrpcService\KBMGrpcService\Protos\user.proto" GrpcServices="Client">
+      <Link>Protos\user.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

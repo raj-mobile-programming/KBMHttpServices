@@ -6,10 +6,14 @@ builder.Services.AddGrpcClient<KBMGrpcService.Protos.OrganizationService.Organiz
 {
     option.Address = new Uri("https://localhost:7048");
 });
+builder.Services.AddGrpcClient<KBMGrpcService.Protos.UserService.UserServiceClient>(option =>
+{
+    option.Address = new Uri("https://localhost:7048");
+});
 
 // Add services to the container.
 builder.Services.AddScoped<IOrganizationService, KBMHttpService.Services.OrganizationService>();
-
+builder.Services.AddScoped<IUserService, KBMHttpService.Services.UserService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

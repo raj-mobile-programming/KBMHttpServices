@@ -64,5 +64,35 @@ namespace KBMHttpService.Controllers
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateOrganization(KBMHttpService.Models.UpdateOrganizationRequestModel req)
+        {
+            try
+            {
+                var request = new UpdateOrganizationRequest { OrganizationId = req.OrganizationId, Name = req.Name, Address = req.Address };
+                await _organizationService.UpdateOrganizationAsync(request);
+                return Ok("Success");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteOrganization(long id)
+        {
+            try
+            {
+                var request = new DeleteOrganizationRequest { OrganizationId = id };
+                await _organizationService.DeleteOrganizationAsync(request);
+                return Ok("Success");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

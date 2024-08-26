@@ -82,5 +82,39 @@ namespace KBMHttpService.Services
                 throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
             }
         }
+        //Update organization
+        public async Task UpdateOrganizationAsync(UpdateOrganizationRequest req)
+        {
+            try
+            {
+                var request = new UpdateOrganizationRequest
+                {
+                    OrganizationId = req.OrganizationId,
+                    Name = req.Name,
+                    Address = req.Address
+                };
+
+                await _client.UpdateOrganizationAsync(request);
+            }
+            catch (RpcException ex) when (ex.StatusCode == Grpc.Core.StatusCode.NotFound)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
+            }
+        }
+        //Soft delete organization
+        public async Task DeleteOrganizationAsync(DeleteOrganizationRequest req)
+        {
+            try
+            {
+                var request = new DeleteOrganizationRequest { OrganizationId = req.OrganizationId };
+
+                await _client.DeleteOrganizationAsync(request);
+            }
+            catch (RpcException ex) when (ex.StatusCode == Grpc.Core.StatusCode.NotFound)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
+            }
+        }
     }
 }
+

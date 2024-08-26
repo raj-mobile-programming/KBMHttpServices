@@ -50,5 +50,37 @@ namespace KBMHttpService.Services
                 throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
             }
         }
+        //Query organization
+        public async Task<QueryOrganizationsResponse> QueryOrganizationsAsync(QueryOrganizationsRequest req)
+        {
+            try
+            {
+                var response = await _client.QueryOrganizationsAsync(req);
+
+                // Constructed response model
+                var responseModel = new QueryOrganizationsResponse
+                {
+                    Page = response.Page,
+                    PageSize = response.PageSize,
+                    Organizations =
+            {
+                response.Organizations.Select(x => new KBMGrpcService.Protos.OrganizationModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Address = x.Address,
+                    CreatedAt = x.CreatedAt
+                }).ToList()
+
+            }
+                };
+                responseModel.Total = responseModel.Organizations.Count;
+                return responseModel;
+            }
+            catch (RpcException ex) when (ex.StatusCode == Grpc.Core.StatusCode.NotFound)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
+            }
+        }
     }
 }

@@ -50,5 +50,19 @@ namespace KBMHttpService.Controllers
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost("Query")]
+        public async Task<IActionResult> QueryOrganizations([FromQuery] QueryOrganizationsRequest request)
+        {
+            try
+            {
+                var response = await _organizationService.QueryOrganizationsAsync(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

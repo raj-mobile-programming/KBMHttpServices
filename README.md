@@ -5,17 +5,13 @@ KBMHttpService: This is a WebAPI project, which is consuming KBMGrpcService endp
 
 **Project Setup**
 
-1.Clone the repositories using following links:
-KBMGrpcService: https://github.com/raj-mobile-programming/KBMGrpcServices.git
-KBMHttpService: https://github.com/raj-mobile-programming/KBMGrpcServices.git
+1.Update the port number for https on which KBMGrpcService is running in KBMHttpService.Program.cs file.
 
-2.Update the port number for https on which KBMGrpcService is running in KBMHttpService.Program.cs file.
+2. Now run KBMHttpService project.
 
-3. Now run KBMHttpService project.
+3. Now you are ready to use the endpoints for Organization and for Users for KBMHttpService
 
-4. Now you are ready to use the endpoints for Organization and for Users for KBMHttpService
-
-10. To run Unit Tests and Integration Tests
+4. To run Unit Tests and Integration Tests
 In visual studio Click>Tests > Test Explorer > Run All Tests
 
 **Project Structure**

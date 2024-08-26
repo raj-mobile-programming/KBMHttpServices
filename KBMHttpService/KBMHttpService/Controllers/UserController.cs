@@ -51,5 +51,63 @@ namespace KBMHttpService.Controllers
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost("Query")]
+        public async Task<IActionResult> QueryUsers([FromQuery] QueryOrganizationRequestModel req)
+        {
+            try
+            {
+                var request = new QueryUserRequestModel
+                {
+                    page = req.page,
+                    pageSize = req.page,
+                    orderBy = req.orderBy,
+                    direction = req.orderBy,
+                    queryString = req.queryString,
+                };
+                var response = await _userService.QueryUsersAsync(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateUser(UpdateUserRequestModel req)
+        {
+            try
+            {
+                await _userService.UpdateUserAsync(req);
+                return Ok("Success");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteUser(long id)
+        {
+            var req = new DeleteUserRequestModel { UserId = id };
+            await _userService.DeleteUserAsync(req);
+            return Ok("Success");
+        }
+
+        [HttpPut("Associcate")]
+        public async Task<IActionResult> AssociateUserToOrganization(AssociateUserRequestModel req)
+        {
+            await _userService.AssociateUserToOrganizationAsync(req);
+            return Ok("Success");
+        }
+
+        [HttpPut("Disassociate")]
+        public async Task<IActionResult> DisassociateUserFromOrganizationRequest(DisassociateUserRequestModel req)
+        {
+            await _userService.DisassociateUserFromOrganizationAsync(req);
+            return Ok("Success");
+        }
     }
 }

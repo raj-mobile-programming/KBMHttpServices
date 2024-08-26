@@ -8,3 +8,5 @@
 /KBMHttpService/.vs/ProjectEvaluation
 /KBMHttpService/KBMHttpServices.Tests/bin/Debug/net6.0
 /KBMHttpService/KBMHttpServices.Tests/obj
+/KBMHttpService/KBMHttpService.IntegrationTests/bin/Debug/net6.0
+/KBMHttpService/KBMHttpService.IntegrationTests/obj

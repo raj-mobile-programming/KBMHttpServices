@@ -39,12 +39,13 @@ namespace KBMHttpService.Services
         }
 
 
-        public async Task<GetUserResponse> GetUserAsync(GetUserRequest req)
+        public async Task<GetUserResponseModel> GetUserAsync(GetUserRequestModel req)
         {
             try
             {
-                var response = await _client.GetUserAsync(req);
-                return new GetUserResponse
+                var request = new GetUserRequest { UserId = req.userId };
+                var response = await _client.GetUserAsync(request);
+                return new GetUserResponseModel
                 {
                     Name = response.Name,
                     Username = response.Username,

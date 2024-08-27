@@ -45,15 +45,15 @@ public class UserControllerTests
     public async Task GetUser_ReturnsOkResult_WhenUserExists()
     {
         // Arrange
-        var response = new GetUserResponse
+        var response = new GetUserResponseModel
         {
             Name = "Test Name",
             Username = "testusername",
             Email = "test@example.com",
-            CreatedAt = 1724615233
+            CreatedAt = 1724612047
         };
 
-        _mockUserService.Setup(service => service.GetUserAsync(It.IsAny<GetUserRequest>()))
+        _mockUserService.Setup(service => service.GetUserAsync(It.IsAny<GetUserRequestModel>()))
                         .ReturnsAsync(response);
 
         // Act
@@ -61,16 +61,14 @@ public class UserControllerTests
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnValue = Assert.IsType<GetUserResponse>(okResult.Value);
+        var returnValue = Assert.IsType<GetUserResponseModel>(okResult.Value);
         Assert.Equal("Test Name", returnValue.Name);
     }
-
     [Fact]
     public async Task GetUser_ReturnsNotFound_WhenUserDoesNotExist()
     {
         // Arrange
-        _mockUserService.Setup(service => service.GetUserAsync(It.IsAny<GetUserRequest>()))
-                        .ReturnsAsync((GetUserResponse)null);
+        _mockUserService.Setup(service => service.GetUserAsync(It.IsAny<GetUserRequestModel>()));
 
         // Act
         var result = await _controller.GetUser(1);
@@ -208,8 +206,7 @@ public class UserControllerTests
     public async Task GetUserReturnsNotFoundWhenUserDoesNotExist()
     {
         // Arrange
-        _mockUserService.Setup(service => service.GetUserAsync(It.IsAny<GetUserRequest>()))
-                        .ReturnsAsync((GetUserResponse)null);
+        _mockUserService.Setup(service => service.GetUserAsync(It.IsAny<GetUserRequestModel>()));
 
         // Act
         var result = await _controller.GetUser(1);

@@ -2,7 +2,6 @@
 using KBMGrpcService.Models;
 using KBMGrpcService.Protos;
 using KBMHttpService.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace KBMHttpService.Services
 {
@@ -15,7 +14,7 @@ namespace KBMHttpService.Services
             _client = client;
         }
 
-        public async Task<CreateOrganizationResponse> CreateOrganizationAsync(CreateOrganizationRequestModel request)
+        public async Task<CreateOrganizationResponseModel> CreateOrganizationAsync(CreateOrganizationRequestModel request)
         {
             try
             {
@@ -26,21 +25,21 @@ namespace KBMHttpService.Services
                 };
 
                 var response = await _client.CreateOrganizationAsync(req);
-                return response;
+                return new CreateOrganizationResponseModel { OrganizationId = response.OrganizationId};
             }
             catch (Exception ex)
             {
                 throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
             }
         }
-        public async Task<GetOrganizationResponse> GetOrganizationAsync(GetOrganizationRequest req)
+        public async Task<GetOrganizationResponseModel> GetOrganizationAsync(GetOrganizationRequestModel req)
         {
-            var request = new GetOrganizationRequest { Id = req.Id };
+            var request = new GetOrganizationRequest { Id = req.organizationId };
 
             try
             {
                 var response = await _client.GetOrganizationAsync(request);
-                return new KBMGrpcService.Protos.GetOrganizationResponse
+                return new GetOrganizationResponseModel
                 {
                     Name = response.Name,
                     Address = response.Address,
@@ -94,7 +93,7 @@ namespace KBMHttpService.Services
         }
 
         //Update organization
-        public async Task<UpdateOrganizationResponse> UpdateOrganizationAsync(UpdateOrganizationRequest req)
+        public async Task<UpdateOrganizationResponseModel> UpdateOrganizationAsync(UpdateOrganizationRequestModel req)
         {
             try
             {
@@ -106,7 +105,7 @@ namespace KBMHttpService.Services
                 };
 
                var response = await _client.UpdateOrganizationAsync(request);
-                return response;
+                return new UpdateOrganizationResponseModel { Message = response.Message };
             }
             catch (RpcException ex) when (ex.StatusCode == Grpc.Core.StatusCode.NotFound)
             {
@@ -115,7 +114,7 @@ namespace KBMHttpService.Services
         }
 
         //Soft delete organization
-        public async Task DeleteOrganizationAsync(DeleteOrganizationRequest req)
+        public async Task DeleteOrganizationAsync(DeleteOrganizationRequestModel req)
         {
             try
             {

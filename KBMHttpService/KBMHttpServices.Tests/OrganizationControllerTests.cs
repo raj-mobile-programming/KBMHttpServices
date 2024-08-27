@@ -21,7 +21,7 @@ public class OrganizationControllerTests : IDisposable
     {
         // Arrange
         var request = new CreateOrganizationRequestModel { Name = "Test Org", Address = "123 Street" };
-        var response = new CreateOrganizationResponse { OrganizationId = 1 };
+        var response = new CreateOrganizationResponseModel { OrganizationId = 1 };
 
         _mockService.Setup(x => x.CreateOrganizationAsync(It.IsAny<CreateOrganizationRequestModel>()))
                     .ReturnsAsync(response);
@@ -38,9 +38,9 @@ public class OrganizationControllerTests : IDisposable
     public async Task GetOrganization_ReturnsOkResult_WithOrganization()
     {
         // Arrange
-        var response = new GetOrganizationResponse { Name = "Test Org", Address = "123 Street" };
+        var response = new GetOrganizationResponseModel { Name = "Test Org", Address = "123 Street" };
 
-        _mockService.Setup(x => x.GetOrganizationAsync(It.IsAny<GetOrganizationRequest>()))
+        _mockService.Setup(x => x.GetOrganizationAsync(It.IsAny<GetOrganizationRequestModel>()))
                     .ReturnsAsync(response);
 
         // Act
@@ -55,8 +55,7 @@ public class OrganizationControllerTests : IDisposable
     public async Task GetOrganization_ReturnsNotFound_WhenOrganizationNotExists()
     {
         // Arrange
-        _mockService.Setup(x => x.GetOrganizationAsync(It.IsAny<GetOrganizationRequest>()))
-                    .ReturnsAsync((GetOrganizationResponse)null);
+        _mockService.Setup(x => x.GetOrganizationAsync(It.IsAny<GetOrganizationRequestModel>())).ReturnsAsync((GetOrganizationResponseModel)null);
 
         // Act
         var result = await _controller.GetOrganization(1);
@@ -89,7 +88,7 @@ public class OrganizationControllerTests : IDisposable
         // Arrange
         var request = new KBMHttpService.Models.UpdateOrganizationRequestModel { OrganizationId = 1, Name = "Updated Org", Address = "456 Street" };
 
-        _mockService.Setup(x => x.UpdateOrganizationAsync(It.IsAny<UpdateOrganizationRequest>()));
+        _mockService.Setup(x => x.UpdateOrganizationAsync(It.IsAny<UpdateOrganizationRequestModel>()));
 
         // Act
         var result = await _controller.UpdateOrganization(request);
@@ -102,7 +101,7 @@ public class OrganizationControllerTests : IDisposable
     public async Task DeleteOrganization_ReturnsOkResult()
     {
         // Arrange
-        _mockService.Setup(x => x.DeleteOrganizationAsync(It.IsAny<DeleteOrganizationRequest>()))
+        _mockService.Setup(x => x.DeleteOrganizationAsync(It.IsAny<DeleteOrganizationRequestModel>()))
                     .Returns(Task.CompletedTask);
 
         // Act

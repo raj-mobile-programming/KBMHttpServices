@@ -1,9 +1,7 @@
 ﻿using KBMHttpService.Services;
 using KBMGrpcService.Protos;
 using Microsoft.AspNetCore.Mvc;
-using Grpc.Core;
 using KBMHttpService.Models;
-using System.Net;
 
 namespace KBMHttpService.Controllers
 {
@@ -53,7 +51,7 @@ namespace KBMHttpService.Controllers
         {
             try
             {
-                var request = new GetOrganizationRequest { Id = id };
+                var request = new GetOrganizationRequestModel { organizationId = id };
                 var response = await _organizationService.GetOrganizationAsync(request);
 
                 if (response == null)
@@ -109,7 +107,7 @@ namespace KBMHttpService.Controllers
         {
             try
             {
-                var req = new UpdateOrganizationRequest { OrganizationId = request.OrganizationId, Name = request.Name, Address = request.Address };
+                var req = new UpdateOrganizationRequestModel { OrganizationId = request.OrganizationId, Name = request.Name, Address = request.Address };
                  var response = await _organizationService.UpdateOrganizationAsync(req);
                 return Ok(response);
             }
@@ -135,7 +133,7 @@ namespace KBMHttpService.Controllers
         {
             try
             {
-                var request = new DeleteOrganizationRequest { OrganizationId = id };
+                var request = new DeleteOrganizationRequestModel { OrganizationId = id };
                 await _organizationService.DeleteOrganizationAsync(request);
                 return Ok("Organization deleted successfully.");
             }

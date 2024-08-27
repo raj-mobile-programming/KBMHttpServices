@@ -52,7 +52,7 @@ namespace KBMHttpService.Controllers
         {
             try
             {
-                var req = new GetUserRequest { UserId = id };
+                var req = new GetUserRequestModel { userId = id };
                 var response = await _userService.GetUserAsync(req);
 
                 if (response == null)

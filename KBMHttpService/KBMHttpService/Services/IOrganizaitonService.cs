@@ -5,11 +5,11 @@ namespace KBMHttpService.Services
 {
     public interface IOrganizationService
     {
-        public Task<CreateOrganizationResponse> CreateOrganizationAsync(CreateOrganizationRequestModel model);
-        public Task<GetOrganizationResponse> GetOrganizationAsync(GetOrganizationRequest req);
+        public Task<CreateOrganizationResponseModel> CreateOrganizationAsync(CreateOrganizationRequestModel model);
+        public Task<GetOrganizationResponseModel> GetOrganizationAsync(GetOrganizationRequestModel req);
         public Task<KBMHttpService.Models.QueryOrganizationResponseModel> QueryOrganizationsAsync(QueryRequestModel req);
-        public Task<UpdateOrganizationResponse> UpdateOrganizationAsync(UpdateOrganizationRequest req);
-        public Task DeleteOrganizationAsync(DeleteOrganizationRequest req);
+        public Task<UpdateOrganizationResponseModel> UpdateOrganizationAsync(UpdateOrganizationRequestModel req);
+        public Task DeleteOrganizationAsync(DeleteOrganizationRequestModel req);
     }
 
 }

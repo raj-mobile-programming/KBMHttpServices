@@ -7,7 +7,7 @@ namespace KBMHttpService.Services
     public interface IUserService
     {
         public Task<CreateUserResponseModel> CreateUserAsync(CreateUserRequestModel req);
-        public Task<GetUserResponse> GetUserAsync(GetUserRequest req);
+        public Task<GetUserResponseModel> GetUserAsync(GetUserRequestModel req);
         public Task<QueryUsersResponseModel> QueryUsersAsync(QueryRequestModel req);
         public Task<UpdateUserResponseModel> UpdateUserAsync(UpdateUserRequestModel req);
         public Task<DeleteUserResponseModel> DeleteUserAsync(DeleteUserRequestModel req);
